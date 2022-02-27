@@ -43,7 +43,7 @@ public class ElementController {
      * @return id созданного элемента
      */
     @PostMapping("/addelement")
-    public ResponseEntity<String> addElementPostMapping(@RequestBody AddElementRequest request) throws JsonProcessingException {
+    public ResponseEntity<String> addElement(@RequestBody AddElementRequest request) throws JsonProcessingException {
         if (request == null || StringUtils.isEmpty(request.getName())
                 || StringUtils.isEmpty(request.getCategoryName()))
             return ResponseEntity.badRequest().body("Укажите поля name и category");
@@ -78,8 +78,8 @@ public class ElementController {
      *                максимальное количество записей и номер страницы базы данных
      * @return список элементов
      */
-    @PostMapping("/getlist")
-    public ResponseEntity<String> getListPostMapping(@RequestBody(required = false) GetListRequest request) throws JsonProcessingException {
+    @PostMapping("/getelements")
+    public ResponseEntity<String> getList(@RequestBody(required = false) GetListRequest request) throws JsonProcessingException {
         int limit = (request == null || request.getLimit() == null) ? 100 : request.getLimit();
         int page = (request == null || request.getPage() == null) ? 0 : request.getPage();
 
