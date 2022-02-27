@@ -3,5 +3,5 @@ git clone https://github.com/girisn/todo_list.git /tmp/todo_list
 cd /tmp/todo_list
 
 cd todolist
-mvn clean package
+mvn clean package -U
 docker build -t todolist:1 .
