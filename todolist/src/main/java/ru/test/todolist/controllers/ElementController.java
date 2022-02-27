@@ -14,7 +14,6 @@ import ru.test.todolist.model.Category;
 import ru.test.todolist.model.Element;
 import ru.test.todolist.model.Status;
 import ru.test.todolist.model.requestmodel.AddElementRequest;
-import ru.test.todolist.model.requestmodel.GetListRequest;
 import ru.test.todolist.model.responsemodel.ElementResponse;
 import ru.test.todolist.model.responsemodel.ElementResponseList;
 import ru.test.todolist.repository.ElementRepository;
@@ -74,23 +73,30 @@ public class ElementController {
     /**
      * Возвращает список элементов, хранящийся в базе данных
      *
-     * @param request json, хранящий в себе список запрашиваемых статусов,
-     *                максимальное количество записей и номер страницы базы данных
+     * @param limitParam    предельное количество возвращаемых элементов
+     * @param pageParam     страница базы данных
+     * @param statusParam   статус для выборки данных по статусу
      * @return список элементов
      */
-    @PostMapping("/getelements")
-    public ResponseEntity<String> getList(@RequestBody(required = false) GetListRequest request) throws JsonProcessingException {
-        int limit = (request == null || request.getLimit() == null) ? 100 : request.getLimit();
-        int page = (request == null || request.getPage() == null) ? 0 : request.getPage();
+    @GetMapping("/getelements")
+    public ResponseEntity<String> getList(@RequestParam(value = "limit", required = false) String limitParam,
+                                          @RequestParam(value = "page", required = false) String pageParam,
+                                          @RequestParam(value = "status", required = false) String statusParam) throws JsonProcessingException {
+        if ((!StringUtils.isEmpty(limitParam) && !parseInteger(limitParam))
+                || (!StringUtils.isEmpty(pageParam) && !parseInteger(pageParam)))
+            return ResponseEntity.badRequest().body("Параметры limit / page должны иметь целочисленное значение");
+
+        int limit = (StringUtils.isEmpty(limitParam)) ? 100 : Integer.parseInt(limitParam);
+        int page = (StringUtils.isEmpty(pageParam)) ? 0 : Integer.parseInt(pageParam);
 
         Pageable pageable = PageRequest.of(page, limit, Sort.by("category"));
         List<Element> elementList = null;
 
         Long startNano = System.nanoTime();
-        if (request == null || request.getStatusName() == null)
+        if (StringUtils.isEmpty(statusParam))
             elementList = elementRepository.findAll(pageable).toList();
         else {
-            Optional<Status> status = statusRepository.findById(request.getStatusName());
+            Optional<Status> status = statusRepository.findById(statusParam);
             if (status.isPresent())
                 elementList = elementRepository.findByStatus(status.get(), pageable);
         }
@@ -127,7 +133,7 @@ public class ElementController {
 
             Long saveStart = System.nanoTime();
             try {
-                elementRepository.save(element);
+                element = elementRepository.save(element);
             } catch (Exception ex) {
                 return ResponseEntity.badRequest().body("Убедитесь, что статус/категория нового элемента существуют");
             }
@@ -139,5 +145,14 @@ public class ElementController {
         }
 
         return ResponseEntity.ok().headers(httpHeaders).body(objectMapper.writeValueAsString(new ElementResponse()));
+    }
+
+    private boolean parseInteger(String value) {
+        try {
+            Integer.parseInt(value);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }
