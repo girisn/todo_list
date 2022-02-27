@@ -1,3 +1,7 @@
+Скрипты для запуска в Docker лежат в папке resources
+
+
+
 ELEMENT CONTROLLER:
 --addelement (post query) - функция для добавления нового элемента.
 body:
