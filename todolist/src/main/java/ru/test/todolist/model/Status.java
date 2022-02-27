@@ -19,6 +19,17 @@ public class Status {
     @Column(name = "description", columnDefinition = "text")
     private String description;
 
+    public Status() {}
+
+    public Status(String name) {
+        this.name = name;
+    }
+
+    public Status(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
     public String getName() {
         return name;
     }

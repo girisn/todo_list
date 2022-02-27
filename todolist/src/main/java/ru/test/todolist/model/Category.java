@@ -19,6 +19,17 @@ public class Category {
     @Column(name = "description", columnDefinition = "text")
     private String description;
 
+    public Category() {}
+
+    public Category(String name) {
+        this.name = name;
+    }
+
+    public Category(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
     public String getName() {
         return name;
     }

@@ -21,16 +21,16 @@ public class Element {
     private String description;
 
     @JsonProperty(value = "status")
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "status", referencedColumnName = "name", nullable = false,
             foreignKey = @ForeignKey(name = "fk_element_status_name"), columnDefinition = "text")
-    private String status;
+    private Status status;
 
     @JsonProperty(value = "category")
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "category", referencedColumnName = "name", nullable = false,
             foreignKey = @ForeignKey(name = "fk_element_category_name"), columnDefinition = "text")
-    private String category;
+    private Category category;
 
 
     public String getId() {
@@ -57,19 +57,19 @@ public class Element {
         this.description = description;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
-    public String getCategory() {
+    public Category getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 }
