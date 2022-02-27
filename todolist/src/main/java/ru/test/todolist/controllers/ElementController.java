@@ -140,14 +140,4 @@ public class ElementController {
 
         return ResponseEntity.ok().headers(httpHeaders).body(objectMapper.writeValueAsString(new ElementResponse()));
     }
-
-
-    private boolean parseInteger(String value) {
-        try {
-            Integer.parseInt(value);
-            return true;
-        } catch (Exception ex) {
-            return false;
-        }
-    }
 }
