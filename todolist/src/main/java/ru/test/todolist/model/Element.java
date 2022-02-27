@@ -1,29 +1,36 @@
 package ru.test.todolist.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "element", schema = "todolist")
 public class Element {
     @Id
+    @JsonProperty(value = "id")
     @Column(name = "id", columnDefinition = "text")
     private String id;
 
+    @JsonProperty(value = "name")
     @Column(name = "name", columnDefinition = "text")
     private String name;
 
+    @JsonProperty(value = "description")
     @Column(name = "description", columnDefinition = "text")
     private String description;
 
+    @JsonProperty(value = "status")
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "status_id", referencedColumnName = "id", nullable = false,
-            foreignKey = @ForeignKey(name = "fk_element_status_id"))
-    private Integer statusId;
+    @JoinColumn(name = "status", referencedColumnName = "name", nullable = false,
+            foreignKey = @ForeignKey(name = "fk_element_status_name"), columnDefinition = "text")
+    private String status;
 
+    @JsonProperty(value = "category")
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id", referencedColumnName = "id", nullable = false,
-            foreignKey = @ForeignKey(name = "fk_element_category_id"))
-    private Integer categoryId;
+    @JoinColumn(name = "category", referencedColumnName = "name", nullable = false,
+            foreignKey = @ForeignKey(name = "fk_element_category_name"), columnDefinition = "text")
+    private String category;
 
 
     public String getId() {
@@ -50,19 +57,19 @@ public class Element {
         this.description = description;
     }
 
-    public Integer getStatusId() {
-        return statusId;
+    public String getStatus() {
+        return status;
     }
 
-    public void setStatusId(Integer statusId) {
-        this.statusId = statusId;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
-    public Integer getCategoryId() {
-        return categoryId;
+    public String getCategory() {
+        return category;
     }
 
-    public void setCategoryId(Integer categoryId) {
-        this.categoryId = categoryId;
+    public void setCategory(String category) {
+        this.category = category;
     }
 }

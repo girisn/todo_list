@@ -1,5 +1,7 @@
 package ru.test.todolist.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -9,22 +11,13 @@ import javax.persistence.Table;
 @Table(name = "status", schema = "todolist")
 public class Status {
     @Id
-    @Column(name = "id")
-    private Integer id;
-
+    @JsonProperty(value = "name")
     @Column(name = "name", columnDefinition = "text")
     private String name;
 
+    @JsonProperty(value = "description")
     @Column(name = "description", columnDefinition = "text")
     private String description;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
