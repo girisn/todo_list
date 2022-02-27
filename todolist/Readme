@@ -1,0 +1,66 @@
+ELEMENT CONTROLLER:
+--addelement (post query) - функция для добавления нового элемента.
+body:
+{
+    "name":"name",                      обязательный параметр
+    "categoryname":"category name",     обязательный параметр
+    "statusname":"status name",         значение по умолчанию - Draft
+    "description":"description"         значение по умолчанию - null
+}
+В случае ненахождения категории или статуса (в случае, если статус указан), возвращает ошибку.
+Возвращает сущность Element (в том виде, в котором он записан в таблицу)
+
+--getelements (get query) - выводит список элементов
+/getelements?limit={limit}&page={page}&status={status} - все параметры не обязательные
+limit - максимальное количество возвращаемых элементов (по умолчанию 100)
+page - страница базы данных для вывода элементов (по умолчанию 0)
+status - имя статуса для выборки по значению статуса (по умолчанию возвращает элементы с любым статусом)
+
+--changeelement (post query) - функция для изменения уже существующего элемента по id
+body:
+{
+    "id":"id in UUID format",
+    "name":"name",
+    "categoryname":"categoryname",
+    "statusname":"statusname",
+    "description":"description"
+}
+В случае ненахождения категории или статуса (в случае, если статус указан), возвращает ошибку.
+Возвращает сущность Element (в том виде, в котором он записан в таблицу)
+
+
+
+CATEGORY CONTROLLER:
+--addcategory (post query)
+{
+    "name":"Category",
+    "description":"Category description"
+}
+Нет изменений, если категория уже существует
+
+--getcategories (get query)
+
+--changecategory (post query) - по ключевому полю name
+{
+    "name":"Category",
+    "description":"Category description"
+}
+Нет изменений, если категория не найдена
+
+
+STATUS CONTROLLER:
+--addstatus (post query)
+{
+    "name":"Status",
+    "description":"Status description"
+}
+Нет изменений, если статус уже существует
+
+--getstatuses (get query)
+
+--changestatus (post query) - по ключевому полю name
+{
+    "name":"Status",
+    "description":"Status description"
+}
+Нет изменений, если статус не найден
